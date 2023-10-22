@@ -1759,7 +1759,7 @@ async function new_wagon_event(){
     await setTimeoutPromise(2000)
     await typewriter("You are so excited you lose track of the fox.\n")
     await setTimeoutPromise(2000)
-    await typewriter("By the time you relize, he is gone. You are forever indebted to the fox\n")
+    await typewriter("By the time you realize, he is gone. You are forever indebted to the fox\n")
     stats.wagon = 5;
   }else{
     clear();
@@ -1822,8 +1822,8 @@ async function weather_event(){
 
   if ("a"==options_prompt(": ", ["a", "b"])){
     clear();
-    await typewriter("You jump, it apears you were correct. The tornado has caught you.\n", 50)
-    await typewriter("But now you are at to tornado's mercy. And just lost your newly aquired wagon\n", 50)
+    await typewriter("You jump, it appears you were correct. The tornado has caught you.\n", 50)
+    await typewriter("But now you are at to tornado's mercy. And just lost your newly acquired wagon\n", 50)
     stats.wagon = -1;
     await typewriter(".......", 250)
     clear();
@@ -1852,8 +1852,8 @@ async function weather_event(){
       await setTimeoutPromise(10000)
       process.exit();
     }else{
-      await typewriter("You land, and you are alive. The wagon apeared to sheald you.\n", 50)
-      await typewriter("It apears not to have taken any signifigant damage\n", 50)
+      await typewriter("You land, and you are alive. The wagon appeared to shield you.\n", 50)
+      await typewriter("It apers not to have taken any significant damage\n", 50)
       await typewriter("You are in the middle of nowhere\n", 50)
       save(10)
       return
@@ -1877,9 +1877,9 @@ async function lost_event(){
   console.log(STATUE)
   await setTimeoutPromise(4000)
   if (stats.has_followed_fox&&stats.temple_rooms_states[2]==false)
-    await typewriter("You are starting to think this might be signifigant\n", 100)
+    await typewriter("You are starting to think this might be significant\n", 100)
   else if (stats.has_followed_fox||stats.temple_rooms_states[2]==false)
-    await typewriter("This is the secound time you have seen it now\n", 100)
+    await typewriter("This is the second time you have seen it now\n", 100)
   else 
     await typewriter("It is cool, but you are unsure what it means\n", 100)
 
@@ -1929,7 +1929,7 @@ async function lost_event(){
 
 async function strange_animals(){
   clear();
-  await typewriter("You continue on, you are unsure where you are, but if you keep heading west you should arive\n", 50)
+  await typewriter("You continue on, you are unsure where you are, but if you keep heading west you should arrive\n", 50)
 
   await typewriter('You hear a rustling in the forrest, you stop your wagon to see what it is.\n', 50)
   await setTimeoutPromise(3000)
@@ -1987,16 +1987,16 @@ async function river_travelers(){
     await setTimeoutPromise(1000)
     await typewriter("You can make out some of their conversation\n", 50)
     await setTimeoutPromise(1000)
-    await typewriter('"Are you sure their is a pillar of the yash around here?" One says through a heavy accent\n', 50)
+    await typewriter('"Are you sure their is a Pillar Of Yash around here?" One says through a heavy accent\n', 50)
     await setTimeoutPromise(1000)
     await typewriter('"Of course, this is the very forest mentioned in the ancient texts," one of them replies, excitement evident in their voice\n', 50)
     await setTimeoutPromise(1000)
-    await typewriter(`"We must get there soon, the sword from the temple of Tish was missing. We can't allow the Crown Of Chaos to be lost aswell" He goes on, urgency lacing his words.\n`, 50)
+    await typewriter(`"We must get there soon, the sword from the temple of Tish was missing. We can't allow the Crown Of Chaos to be lost as well" He goes on, urgency lacing his words.\n`, 50)
 
     if (stats.crown_of_chaos) // If the charictor has picked up the crown
-      await typewriter(`The one who is explaining this has a simular crown to your own, however it seems rough, almost as if it were a replica.\n`, 50)
+      await typewriter(`The one who is explaining this has a similar crown to your own, however it seems rough, almost as if it were a replica.\n`, 50)
     else
-      await typewriter("Now you are both relived and terified you left the crown behind \n", 50)
+      await typewriter("Now you are both relived and terrified you left the crown behind \n", 50)
 
     await typewriter(`"The four pillars that have survived to the present time are our sacred birthright. We must not allow another artifact to be lost"\n`, 50)
 
@@ -2004,15 +2004,15 @@ async function river_travelers(){
 
     await typewriter(`"We prepare for war"\n`, 50)
 
-    await typewriter(`Their boat is now out of ear shot, you come out of the woods and head in the oposite direction.\n`, 50)
-    await typewriter(`They must be coming from California, or atleast the west\n`, 50)
+    await typewriter(`Their boat is now out of ear shot, you come out of the woods and head in the opposite direction.\n`, 50)
+    await typewriter(`They must be coming from California, or at least the west\n`, 50)
   }else{
     await typewriter("You walk into the sunlight, they look at you, you look at them.\n", 60)
     await setTimeoutPromise(1000)
     if (stats.crown_of_chaos){
-      await typewriter("Their eyes open in relization\n", 50)
+      await typewriter("Their eyes open in realization\n", 50)
       await setTimeoutPromise(1000)
-      await typewriter(`The taller one has a simular crown to your own, however it seems rough, almost as if it were a replica.\n`, 50)
+      await typewriter(`The taller one has a similar crown to your own, however it seems rough, almost as if it were a replica.\n`, 50)
       await setTimeoutPromise(1000)
       await typewriter("They look at your crown, and look more shocked than you have ever seen anyone look before.\n", 50)
       await setTimeoutPromise(1000)
@@ -2026,7 +2026,7 @@ async function river_travelers(){
       stats.they_saw=true
 
     }else{
-      await typewriter("They stop taking, and continue on east, the oposite direction as you\n", 50)
+      await typewriter("They stop taking, and continue on east, the opposite direction as you\n", 50)
       stats.they_saw=true
     }
   }
