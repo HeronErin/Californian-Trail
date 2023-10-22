@@ -45,7 +45,7 @@ const {
 var stats = {
   name: "",
   health: 100,
-  balence: 8000,
+  balance: 8000,
   food: 0,
   first_aid_kits: 0,
 
@@ -59,38 +59,37 @@ var stats = {
 
 }
 
-
 async function starting_shop() {
   clear();
   console.log(BIG_SHOP_TEXT + "\n")
 
   while (true){
-    await typewriter("Welcome to the shop, traveler. Before you set out on your journey you must get equiped.\n", 50)
+    await typewriter("Welcome to the shop, traveler. Before you set out on your journey you must get equipped.\n", 50)
     await shop_window()
     if (stats.sword == -1 || stats.wagon == -1 || stats.shovel == -1){
-      await typewriter(ansi_yellow+"\nTraveler, you appear to be ill-equipped, please purchace as sword, wagon, and shovel!\n" + ansi_reset, 50)
+      await typewriter(ansi_yellow+"\nTraveler, you appear to be ill-equipped, please purchase a sword, wagon, and shovel!\n" + ansi_reset, 50)
     }else if (stats.food < 10){
       await typewriter(ansi_yellow+"\nWith that little food you will starve to death for sure\n"+ ansi_reset, 50)
     }else if (stats.first_aid_kits < 5){
-      await typewriter(ansi_yellow+"\nWithout any First Aid Kits you are sure to parish\n"+ ansi_reset, 50)
+      await typewriter(ansi_yellow+"\nWithout any First Aid Kits you are sure to perish\n"+ ansi_reset, 50)
     }else{
       return;
     }
   }
-
-
 }
-async function purchace_x_amount(question, price){
+
+async function purchase_x_amount(question, price){
   let amount = prompt(question)*1 // To number
-  if (stats.balence >= amount * price){
-    stats.balence -= amount * price
+  if (stats.balance >= amount * price){
+    stats.balance -= amount * price
     return amount
   }
   else{
-    await typewriter(ansi_red+"You do not have enough balence to purchase this."+ansi_reset, 50)
+    await typewriter(ansi_red+"You do not have enough balance to purchase this."+ansi_reset, 50)
     return 0
   }
 }
+
 function priceCalc(number, mode){
   if (mode == '3')
     return 2**(number) * 200;
@@ -99,82 +98,77 @@ function priceCalc(number, mode){
   else if (mode == "5")
     return 2**(number) * 350;
 }
+
 async function shop_select_menu(option){
-    console.log("Which one would you like?")
-    
-    let name_get;
-    if (option =="3")
-      name_get = name_of_shovel;
-    else if (option == "4")
-      name_get = name_of_wagon;
-    else if (option == "5")
-      name_get = name_of_sword;
+  console.log("Which one would you like?")
 
+  let name_get;
+  if (option =="3")
+    name_get = name_of_shovel;
+  else if (option == "4")
+    name_get = name_of_wagon;
+  else if (option == "5")
+    name_get = name_of_sword;
 
+  for (let i = 1; i != 8; i++)
+    console.log(i+": "+ name_get(i) + " (" + priceCalc(i, option) + " balance)");
 
-    for (let i = 1; i != 8; i++)
-      console.log(i+": "+ name_get(i) + " (" + priceCalc(i, option) + " balence)");
-    
-    console.log("8: Back");
-    let item_to_buy = options_prompt(": ", ["1", "2", "3", "4", "5", "6", "7", "8"]);
-    if (item_to_buy != "8"){
-      let price = priceCalc(item_to_buy*1, option);
-      if (price <= stats.balence){
-        stats.balence-=price;
-        if (option == "3"){
-          if (stats.shovel >= item_to_buy*1){
-            stats.balence+=price;
-            await typewriter(ansi_red+"You already have this or a better tool."+ansi_reset, 50);
-            return await shop_window();
-          }
-          else
-            stats.shovel = item_to_buy*1;
-          
-        }else  if (option == "4"){
-          if (stats.wagon >= item_to_buy*1){
-            stats.balence+=price;
-            await typewriter(ansi_red+"You already have this or a better tool."+ansi_reset, 50);
-            return await shop_window();
-          }
-          else
-            stats.wagon = item_to_buy*1;
-        }else if (option == "5"){
-          if (stats.sword >= item_to_buy*1){
-            stats.balence+=price;
-            console.log(ansi_red+"You already have this or a better tool."+ansi_reset);
-            return await shop_window();
-          }
-          else
-            stats.sword = item_to_buy*1;
+  console.log("8: Back");
+  let item_to_buy = options_prompt(": ", ["1", "2", "3", "4", "5", "6", "7", "8"]);
+  if (item_to_buy != "8"){
+    let price = priceCalc(item_to_buy*1, option);
+    if (price <= stats.balance){
+      stats.balance-=price;
+      if (option == "3"){
+        if (stats.shovel >= item_to_buy*1){
+          stats.balance+=price;
+          await typewriter(ansi_red+"You already have this or a better tool."+ansi_reset, 50);
+          return await shop_window();
         }
-      }else{
-        clear()
-        console.log(ansi_red+"You do not have enough balence to purchase this."+ansi_reset);
-        return shop_window();
+        else
+          stats.shovel = item_to_buy*1;
+
+      }else  if (option == "4"){
+        if (stats.wagon >= item_to_buy*1){
+          stats.balance+=price;
+          await typewriter(ansi_red+"You already have this or a better tool."+ansi_reset, 50);
+          return await shop_window();
+        }
+        else
+          stats.wagon = item_to_buy*1;
+      }else if (option == "5"){
+        if (stats.sword >= item_to_buy*1){
+          stats.balance+=price;
+          console.log(ansi_red+"You already have this or a better tool."+ansi_reset);
+          return await shop_window();
+        }
+        else
+          stats.sword = item_to_buy*1;
       }
-
-
+    }else{
+      clear()
+      console.log(ansi_red+"You do not have enough balance to purchase this."+ansi_reset);
+      return shop_window();
     }
-
-    clear()
-    return shop_window();
+  }
+  clear()
+  return shop_window();
 }
 
 async function shop_window(){
   display_stats_for_store();
 
-
-  console.log("\nPuchase Items:")
-  console.log("1. Food (40 balence each)")
-  console.log("2. First Aid kits (40 balence each)")
-  console.log("3. Shovels (Multiple options avalible)")
-  console.log("4. Wagons (Multiple options avalible)")
-  console.log("5. Swords (Multiple options avalible)")
-  console.log("6. Instant heal (10 balence per health point)")
+  console.log("\nPurchase Items:")
+  console.log("1. Food (40 balance each)")
+  console.log("2. First Aid kits (40 balance each)")
+  console.log("3. Shovels (Multiple options available)")
+  console.log("4. Wagons (Multiple options available)")
+  console.log("5. Swords (Multiple options available)")
+  console.log("6. Instant heal (10 balance per health point)")
   console.log("7. Exit shop")
   let option = options_prompt(": ", ["1", "2", "3", "4", "5", "6", "7", "999"])
   if (option == "1"){
-    let amount = await purchace_x_amount("How much food would you like to purchase: ", 40)
+    let amount = await purchase_x_amount("How much food would you like to purchase: ", 40)
     clear();
     if (amount > 0){
       stats.food += amount
@@ -182,29 +176,30 @@ async function shop_window(){
     }
     return await shop_window();
   }else if (option == "2"){
-      let amount = await purchace_x_amount("How many First Aid kits would you like to purchase: ", 40)
-      clear();
-      if (amount > 0){
-        stats.first_aid_kits += amount
-        console.log("You have purchased " + amount + " First Aid kits")
-      }
+    let amount = await purchase_x_amount("How many First Aid kits would you like to purchase: ", 40)
+    clear();
+    if (amount > 0){
+      stats.first_aid_kits += amount
+      console.log("You have purchased " + amount + " First Aid kits")
+    }
 
     return await shop_window();
   }else if (option =="3" || option =="4" || option =="5"){
     await shop_select_menu(option);
   }else if (option == "999") console.log(stats)
 }
+
 function display_stats_for_store() {
   console.log("You currently have:\n")
   console.log("Health: " + stats.health)
-  console.log("Balence: " + stats.balence)
+  console.log("Balance: " + stats.balance)
   console.log("Food: " + stats.food)
   console.log("First aid kits: "+ stats.first_aid_kits)
   console.log("Shovel: " + name_of_shovel(stats.shovel))
   console.log("Wagon: " + name_of_wagon(stats.wagon))
   console.log("Sword: " + name_of_sword(stats.sword))
-  
 }
+
 async function start_animation(){
   clear();
   console.log(BIG_NAME)
@@ -221,6 +216,7 @@ async function start_animation(){
   clear();
   console.log(BIG_START);
 }
+
 async function snake(){
   await typewriter("\nBut what is that on the ground?\n", 50)
   await setTimeoutPromise(4000);
@@ -234,7 +230,7 @@ async function snake(){
   let snake_opt = options_prompt(": ", ["a", "b", "c"])
   if (snake_opt == "a"){
     await typewriter("You run back inside your small town, never to leave. You are now the laughing stock of the town. ", 50)
-    await typewriter("You spent " + (8000-stats.balence) +"dollars only to run back inside. What a coward.", 50)
+    await typewriter("You spent " + (8000-stats.balance) +" dollars only to run back inside. What a coward.", 50)
     await setTimeoutPromise(10000);
     for (let x = 0; x != 50 ; x++){
       console.log("\n\n\n"+ansi_red+BIG_COWARD)
@@ -247,11 +243,11 @@ async function snake(){
   else if(snake_opt == "b"){
     await fight(snake_animation, 40, SNAKE_FIGHT_FRAMES[21]);
     await typewriter("The snake dropped 500 dollars")
-    stats.balence+=500
+    stats.balance+=500
     await setTimeoutPromise(2000)
   }
   else if (snake_opt == "c"){
-    await typewriter("You get on your tip toes.", 50)
+    await typewriter("You get on your tiptoes.", 50)
     await setTimeoutPromise(5000);
 
     if (chance(25)){ // 25% chance you die
@@ -273,7 +269,7 @@ async function snake(){
 
       return;
     }else{
-      await typewriter("It works, you are passed the snake", 50)
+      await typewriter("It works, you are past the snake", 50)
       await setTimeoutPromise(4000);
       await typewriter("Feeling a little bit of shame you continue", 50)
       await setTimeoutPromise(4000);
@@ -282,8 +278,8 @@ async function snake(){
   await typewriter("You made it past the snake.", 50)
   return true
 }
+
 async function snake_animation(offset){
-  
   let len = 20
   let frames = SNAKE_FIGHT_FRAMES;
   if (offset) {
@@ -307,6 +303,7 @@ async function snake_animation(offset){
     await setTimeoutPromise(20 + Math.abs(12-x));
   }
 }
+
 async function demon_animation(offset) {
   let len = 40
   let frames = DEMON_FIGHT_FRAMES;
@@ -331,8 +328,6 @@ async function demon_animation(offset) {
     await setTimeoutPromise(20 + Math.abs(12-x));
   }
 }
-
-
 
 async function bear_animation(offset){
   let len = 27
@@ -359,6 +354,7 @@ async function bear_animation(offset){
     await setTimeoutPromise(20 + Math.abs(12-x));
   }
 }
+
 async function man_animation(offset){
   let len = 27
   let frames = MAN_FIGHT_FRAMES;
@@ -391,7 +387,7 @@ async function man_animation(offset){
   }
 
 }
-async function fight(animation_funct, enemy_health, base_frame, reversed, damage){
+async function fight(animation_func, enemy_health, base_frame, reversed, damage){
   if (damage == undefined)
     damage = 20;
   let enemy_attack = false;
@@ -463,7 +459,7 @@ async function fight(animation_funct, enemy_health, base_frame, reversed, damage
       stats.health-=damage;
       if (reversed)
         stats.health -= 200;
-      await animation_funct(!reversed)
+      await animation_func(!reversed)
       continue
     }
 
@@ -477,7 +473,7 @@ async function fight(animation_funct, enemy_health, base_frame, reversed, damage
 
     if (action == "a"){
       stats.enemy_health -= (stats.sword*5) + (Math.random()*stats.sword*10)
-      await animation_funct(!!reversed)
+      await animation_func(!!reversed)
       await setTimeoutPromise(300)
       enemy_attack = true;
       continue
@@ -512,7 +508,7 @@ async function first_encounter(){
   await setTimeoutPromise(1000);
   await typewriter("\n\nYou step out the gates of your small town.\n", 50)
   await setTimeoutPromise(4500);
-  await typewriter("\nYou have heard of about many travelers dieing in their journies, but that could never happend to you\n", 50)
+  await typewriter("\nYou have heard of about many travelers dieing in their journeys, but that could never happened to you\n", 50)
   await setTimeoutPromise(4500);
   await typewriter("\nThat only happens to those people, never people like you\n", 50)
   await setTimeoutPromise(4500);
@@ -531,9 +527,9 @@ async function wilderness_1_event1(){
     await typewriter("You don't have much confidence in your wagon, but you think it might just work", 50)
   }
   else if (stats.wagon == 3 || stats.wagon == 4){
-    await typewriter('You feel your wagon is high quality, and am pround of it.', 50)
+    await typewriter('You feel your wagon is high quality, and am proud of it.', 50)
   }else{
-    await typewriter("You are unsure how you got such a great wagon, and belive nothing can stop you now.", 50)
+    await typewriter("You are unsure how you got such a great wagon, and believe nothing can stop you now.", 50)
   }
   prompt("Press enter to continue");
 
@@ -573,7 +569,7 @@ async function wilderness_1_bear_event(){
        await fight(bear_animation, 100, BEAR_FIGHT_FRAMES[27]);
         stats.artifacts.push("bear hide")
         await typewriter("The bear dropped 1500 dollars")
-        stats.balence+=1500
+        stats.balance+=1500
         await setTimeoutPromise(2000)
     }
     else if ("b" == choice){
@@ -586,7 +582,7 @@ async function wilderness_1_bear_event(){
         await fight(bear_animation, 100, BEAR_FIGHT_FRAMES[27]);
         stats.artifacts.push("bear hide")
         await typewriter("The bear dropped 1500 dollars")
-        stats.balence+=1500
+        stats.balance+=1500
         await setTimeoutPromise(2000)
       }
     }
@@ -606,7 +602,7 @@ async function wilderness_1_bear_event(){
         await fight(bear_animation, 100, BEAR_FIGHT_FRAMES[27]);
         stats.artifacts.push("bear hide")
         await typewriter("The bear dropped 1500 dollars")
-        stats.balence+=1500
+        stats.balance+=1500
         await setTimeoutPromise(2000)
       }
     }
@@ -626,7 +622,7 @@ async function river_choice(){
     stats.flag_has_dove = true;
     await typewriter("You didn't want it to come to this, but you don't have a better choice.", 50)
     await setTimeoutPromise(3000);
-    await typewriter("You strip down to your underware, as you didn't bring a swimsuit", 50)
+    await typewriter("You strip down to your underwear, as you didn't bring a swimsuit", 50)
     await setTimeoutPromise(4000);
     let is_secound_time = false;
     while (1){
@@ -652,7 +648,7 @@ async function river_choice(){
         }
         await typewriter("It was hard, but you made it across, but at what cost?", 50)
         await setTimeoutPromise(4000);
-        await typewriter("You are in your underware, on the other side of the river, with no supplies.", 50)
+        await typewriter("You are in your underwear, on the other side of the river, with no supplies.", 50)
         await setTimeoutPromise(4000);
         if (options_prompt("Do you wish to try to make it back? (y/n): ", ["y", "n"]) == "y"){
           is_secound_time= true;
@@ -703,7 +699,7 @@ async function river_choice(){
   }
   else if ("c" == choice){
     clear();
-    await typewriter("You have seen over adenturers do this, it has to work.", 50)
+    await typewriter("You have seen over adventurers do this, it has to work.", 50)
     await setTimeoutPromise(3000);
     await typewriter("You take the wheels off", 50)
     await setTimeoutPromise(3000);
@@ -842,7 +838,7 @@ async function temple_event(){
         await fight(snake_animation, 60, SNAKE_FIGHT_FRAMES[21]);
         stats.artifacts.push("Snake meat")
         await typewriter("The snake dropped 500 dollars and some snake meat")
-        stats.balence+=500
+        stats.balance+=500
         await setTimeoutPromise(2000)
         clear();
         stats.temple_rooms_states[0] = false
@@ -856,7 +852,7 @@ async function temple_event(){
         await typewriter("There is a golden locket on the ground", 50)
         await setTimeoutPromise(4000)
         await typewriter(ansi_yellow_bg+"You pick it up"+ansi_reset, 50)
-        stats.artifacts.push("Spookey Golden Locket")
+        stats.artifacts.push("Spooky Golden Locket")
         stats.temple_rooms_states[1] = false
         await setTimeoutPromise(1000)
       }else if (room == "3"){
@@ -947,7 +943,7 @@ async function traveler_event() {
     console.log(DEMON)
     stats.health = 5000
     await fight(demon_animation, 200, DEMON_FIGHT_FRAMES[40], true)
-    stats.balence+=2000
+    stats.balance+=2000
     let dem = DEMON.replace("\n ", "\n"+ansi_cyan_bg).replaceAll(ansi_red, "").replaceAll(ansi_reset, "")
     dem = dem.replace("\n ", "\n"+ansi_reset)
     for (let i = 0; i != dem.split("\n").length; i++){
@@ -970,7 +966,7 @@ async function traveler_event() {
 
     await setTimeoutPromise(2000)
 
-    await typewriter("It is a look of concern, but also one of relif.\n", 50)
+    await typewriter("It is a look of concern, but also one of relief.\n", 50)
     await setTimeoutPromise(2000)
     await typewriter(`"Hello their, your finally awake" he says\n`, 50)
     await setTimeoutPromise(2000)
@@ -980,11 +976,11 @@ async function traveler_event() {
     await setTimeoutPromise(2000)
     await typewriter(`"Wait, were you the demon" You say.\n`, 50)
     await setTimeoutPromise(2000)
-    await typewriter(`He starts laughing histariclly, and finally replies "I think you have a few things mixed up"\n`, 50)
+    await typewriter(`He starts laughing historically, and finally replies "I think you have a few things mixed up"\n`, 50)
     prompt("Press any key to continue")
     clear();
 
-    await typewriter(`After a long discousion, you and the fellow traveler decide to part ways. With a mutual respect for one another, he for the will power you showed it throughing off the demon, and you for him defeating you in your demon form."\n`, 50)
+    await typewriter(`After a long discursion, you and the fellow traveler decide to part ways. With a mutual respect for one another, he for the will power you showed it throwing off the demon, and you for him defeating you in your demon form."\n`, 50)
     stats.sword = stats.old_sword;
     save(5);
     return;
@@ -1038,7 +1034,7 @@ async function shortcut_event(){
     }
     await typewriter("You continue down the path.", 50)
     await setTimeoutPromise(2000)
-    await typewriter("Half an hour later you check your compus, you are not heading in the correct direction.\n", 50)
+    await typewriter("Half an hour later you check your campus, you are not heading in the correct direction.\n", 50)
     await setTimeoutPromise(2000)
     await typewriter("But you are too far down now to turn back, so you continue down the path.\n", 50)
     await setTimeoutPromise(2000)
@@ -1076,7 +1072,7 @@ async function shortcut_event(){
        stats.artifacts.push("bear teeth")
 
         await typewriter("The bear dropped 1500 dollars")
-        stats.balence+=1500
+        stats.balance+=1500
         await setTimeoutPromise(2000)
 
        save(6)
@@ -1093,7 +1089,7 @@ async function shortcut_event(){
       console.log(BIG_LATER)
       await setTimeoutPromise(2000)
       clear();
-      await typewriter("It is completly dark now, but at least the compus is pointing the correct direction now. But you are completly lost.\n", 50)
+      await typewriter("It is complexly dark now, but at least the campus is pointing the correct direction now. But you are completely lost.\n", 50)
       await setTimeoutPromise(2000)
       await typewriter("You come across a cabin. Behind it is a wall of rock. You are seeming at a dead end.\n", 50)
       await setTimeoutPromise(2000)
@@ -1123,7 +1119,7 @@ async function shortcut_event(){
       clear();
       await typewriter("You are close to getting back on the main path, but you see something ahead of you.", 50)
       await setTimeoutPromise(2000)
-      await typewriter("It is the old man from earler. With a gun.", 50)
+      await typewriter("It is the old man from earlier. With a gun.", 50)
       await setTimeoutPromise(2000)
       if (stats.has_shortcut)
         await typewriter("He says\"So, you decided not to trust my shortcut after all\"", 50)
@@ -1138,9 +1134,9 @@ async function shortcut_event(){
     stats.health = 100; 
     await fight(man_animation, 90, MAN_HURT_FRAMES[40], false, 40);
     stats.has_killed=true
-    await typewriter("But at what cost. You have killed a man, sure it was self defence, but it will still haunt you.", 50)
+    await typewriter("But at what cost. You have killed a man, sure it was self defense, but it will still haunt you.", 50)
     await typewriter("He dropped 5000 dollars", 50)
-    stats.balence+=5000
+    stats.balance+=5000
 
     await setTimeoutPromise(10000);
     stats.going_to_hell =0; // Self defence so no hell points yet
@@ -1149,7 +1145,7 @@ async function shortcut_event(){
       await setTimeoutPromise(4000);
       await typewriter("You find 15 First Aid Kits. And 10,000 dollars, he won't need it now.", 50)
       stats.health=100
-      stats.balence+=10000
+      stats.balance+=10000
       stats.first_aid_kits+=15
       stats.going_to_hell +=1; // Looting though
     }
@@ -1161,7 +1157,7 @@ async function shortcut_event(){
       clear();
       await typewriter("You have defeated your enemy. But are still in the middle of nowhere.\n", 50)
 
-      await typewriter("You look around, the cabin seems to be completly surrounded by rock. Although there seems to be a caved in mineshaft.\nDirectly infront of the cabin\n", 50)
+      await typewriter("You look around, the cabin seems to be completely surrounded by rock. Although there seems to be a caved in mineshaft.\nDirectly in front of the cabin\n", 50)
 
       await typewriter("Do you attempt to enter with your "+ name_of_shovel(stats.shovel)+"?", 50)
 
@@ -1190,9 +1186,9 @@ async function shortcut_event(){
           await typewriter("You have no option but to turn back.\n", 50)
         }else{
           await typewriter("All the debris falls back into the cave\n", 50)
-          await typewriter("You feel that your shovel has been shapened by this\n", 50)
+          await typewriter("You feel that your shovel has been sharpened by this\n", 50)
           let new_s = Math.min(7, stats.shovel+1); // No more than World Clearer
-          await typewriter("You nolonger have a "+name_of_shovel(stats.shovel)+" but a "+name_of_shovel(new_s), 50)
+          await typewriter("You no longer have a "+name_of_shovel(stats.shovel)+" but a "+name_of_shovel(new_s), 50)
           stats.shovel = new_s;
           prompt("Press enter to continue")
           clear();
@@ -1201,7 +1197,7 @@ async function shortcut_event(){
           await typewriter("The ground is littered with stuff.\n", 50)
           await setTimeoutPromise(2000);
           await typewriter("You pick up 344 dollars.\n", 50)
-          stats.balence+=344
+          stats.balance+=344
           await setTimeoutPromise(2000);
           await typewriter("Then a few yards in you see something.\n", 50)
           await setTimeoutPromise(2000);
@@ -1210,14 +1206,14 @@ async function shortcut_event(){
           await setTimeoutPromise(2000);
           await typewriter("A, Red Amulet", 200);
 
-          await typewriter("You pick it up, it has to be valuble.\n", 50)
+          await typewriter("You pick it up, it has to be valuable.\n", 50)
 
           stats.artifacts.push("Red Amulet")
 
           await typewriter("You continue through the cave, but you do not find anything else interesting.\n", 50)
 
           await typewriter("You do find 500 more dollars.\n", 50)
-          stats.balence+=500
+          stats.balance+=500
 
           await typewriter("But after a few hour of walking, you see something, .\n", 50)
           await setTimeoutPromise(5000)
@@ -1279,7 +1275,7 @@ async function secound_town(){
       if ('y'==options_prompt("Do you confess your sin (y/n) ", ["y", "n"])){
         await typewriter("You start to explain to the priest all you have done wrong, he sits and listens.\n", 50)
         await setTimeoutPromise(5000)
-        await typewriter(`The prist, after hearing you out responds "My son, this is the Catholic Church. `, 25)
+        await typewriter(`The priest, after hearing you out responds "My son, this is the Catholic Church. `, 25)
         await typewriter(`All can be forgiven, for he is a merciful god. Now, let's talk about Indulgences. They're a bit like heavenly coupons, `, 20)
         await typewriter(`you see, A miracle from heaven, for the small price of $25,000 you can get one soul point removed. `,15)
         await typewriter(`And judging by what you have told me you currently have `+(stats.going_to_hell*1)+` that need forgiven. For the small price of $`+ (stats.going_to_hell*25_000), 15)
@@ -1287,33 +1283,33 @@ async function secound_town(){
         await typewriter(`Quite the bargain, don't you think? Here at the Catholic Church, we have a motto 'God accepts credit cards'"\n\n`, 10)
 
         await typewriter(`"How many soul points can I put you down for? 2, 6, 23, or perhaps you're aiming for the spiritual high score!`, 10)
-        await typewriter(`I get paid, I mean 'Jesus', gets paid by the referal you know.`, 10)
+        await typewriter(`I get paid, I mean 'Jesus', gets paid by the referral you know.`, 10)
         if ('y'==options_prompt("He raises an eyebrow expectantly, awaiting your decision. Do you take the 'priest's' up on his offer? (y/n) ", ["y", "n"])){
           while (1){
-            let n= number_prompt("How many Indulgences do you with to purchase (0 to exit) (You currently have $"+stats.balence+") ")
+            let n= number_prompt("How many Indulgences do you with to purchase (0 to exit) (You currently have $"+stats.balance+") ")
             if (n == 0)
               break;
             if (n>(stats.going_to_hell*1))
               await typewriter(ansi_red+"Too many, your max is "+(stats.going_to_hell*1)+ansi_reset, 50)
-            else if (n*25000 > stats.balence)
+            else if (n*25000 > stats.balance)
               await typewriter(ansi_red+"You can not afford this."+ansi_reset, 50)
             else{
               stats.going_to_hell-=n;
-              stats.balence-=n*25000
+              stats.balance-=n*25000
               let remaining = stats.going_to_hell;
               if (stats.going_to_hell == 0){
                 stats.going_to_hell = undefined;
                 stats.sin_but_forgiven = true;
               }
               console.log("\n\n")
-              await typewriter("The prist, talking faster than ever \"Thank you my son, your remaining soul", 7)
+              await typewriter("The priest, talking faster than ever \"Thank you my son, your remaining soul", 7)
               await typewriter("points is "+remaining+" and your generous donation will help us buy soo ", 7)
               await typewriter("much coke, I mean, It will help us feed the poor, Your donation is ", 7)
               await typewriter("helping more people than you could ever know.\"\n\n", 7)
 
               await typewriter("Before the priest could convince you to buy more things, you managed to get out of the church.", 60)
               if (stats.going_to_hell == undefined)
-                await typewriter("You know he is a con artist, but you still feel better getting all that off your sholders.", 60)
+                await typewriter("You know he is a con artist, but you still feel better getting all that off your shoulders.", 60)
               save(6)
               break;
             }
@@ -1357,7 +1353,7 @@ async function secound_town(){
             await typewriter("He is lying in your "+ name_of_wagon(stats.wagon) +" with a cloth covering the body\n", 50)
             await typewriter("You bring the body to the local sherif, who comments on how suspects are typically brought in alive.\n", 50)
             await typewriter("You feel even worse about yourself, and he pays you the 50,000 dollars in blood money\n", 50)
-            stats.balence+=50000
+            stats.balance+=50000
             stats.going_to_hell+=1;
             stats.got_body = true;
             save(6)
@@ -1372,7 +1368,7 @@ async function secound_town(){
             await setTimeoutPromise(3000)
             await typewriter("It took longer than you would have liked, but you managed to track him down.\n", 50)
 
-            await typewriter("He is hiding out in a cabin, and that cabin is off the trail you met him at earler. \n\nThere is a branching trail next to large rock shaped like a bear's head\n", 50)
+            await typewriter("He is hiding out in a cabin, and that cabin is off the trail you met him at earlier. \n\nThere is a branching trail next to large rock shaped like a bear's head\n", 50)
 
             await typewriter("You are hiding out in the bushes watching him through the window.\n", 50)
 
@@ -1382,7 +1378,7 @@ async function secound_town(){
               clear();
             }else{
               clear();
-              await typewriter("\nYour storm in, and manage to suprise him. You get in the first hit, he was unarmed. You are goint to hell.\n", 50)
+              await typewriter("\nYour storm in, and manage to surprise him. You get in the first hit, he was unarmed. You are going to hell.\n", 50)
               await setTimeoutPromise(3000)
               save(6)
 
@@ -1390,7 +1386,7 @@ async function secound_town(){
               await fight(man_animation, 90, MAN_HURT_FRAMES[40], false, 40);
               stats.has_killed=true
               await typewriter("He dropped 5000 dollars", 50)
-              stats.balence+=5000
+              stats.balance+=5000
 
               await setTimeoutPromise(10000);
               if ('y' == options_prompt("Do you ransack his cabin? (y/n) ", ["y", "n"])){
@@ -1398,7 +1394,7 @@ async function secound_town(){
                 await setTimeoutPromise(4000);
                 await typewriter("You find 15 First Aid Kits. And 10,000 dollars, he won't need it now.", 50)
                 stats.health=100
-                stats.balence+=10000
+                stats.balance+=10000
                 stats.first_aid_kits+=15
               }
               await setTimeoutPromise(15000);
@@ -1408,7 +1404,7 @@ async function secound_town(){
               await typewriter("He is lying in your "+ name_of_wagon(stats.wagon) +" with a cloth covering the body\n", 50)
               await typewriter("You bring the body to the local sherif, who comments on how suspects are typically brought in alive.\n", 50)
               await typewriter("You feel even worse about yourself, and he pays you the 50,000 dollars in blood money\n", 50)
-              stats.balence+=50000
+              stats.balance+=50000
 
               
 
@@ -1427,7 +1423,7 @@ async function secound_town(){
             clear();
             console.log(ansi_yellow+"Warning: each time you play you will lose soul points!" + ansi_reset)
             console.log()
-            console.log("You have 3 games avalible. (current balence: " + stats.balence + ")")
+            console.log("You have 3 games available. (current balance: " + stats.balance + ")")
             console.log("A. Coin toss")
             console.log("B. Roulette")
             console.log("C. Rock Paper Scissors")
@@ -1437,29 +1433,29 @@ async function secound_town(){
               break;
             else if (game == "a"){
               let n = number_prompt("How much do you wish to bet? ")
-              if (n<= stats.balence){
+              if (n<= stats.balance){
                 let p_result = options_prompt("What do you think it will land on? (heads, tails, side) ", ["heads", "tails", "side"])
                 if (stats.going_to_hell == undefined)
                   stats.going_to_hell = 0
-                stats.going_to_hell += Math.random*0.1; // Atmost 0.1 soul poits
+                stats.going_to_hell += Math.random*0.1; // At most 0.1 soul points
                 if (chance(10)){ // 10% chance it lands on its side
                   await typewriter("It landed on it's side",250)
                   if (p_result == "side")
-                    stats.balence += n*5
+                    stats.balance += n*5
                   else
-                    stats.balence -= n
+                    stats.balance -= n
                 }else if (chance(45)){ // 45% heads
                   await typewriter("It landed on heads",250)
                   if (p_result == "heads")
-                    stats.balence += n
+                    stats.balance += n
                   else
-                    stats.balence -= n
+                    stats.balance -= n
                 }else{ // Otherwise tails
                   await typewriter("It landed on tails",250)
                   if (p_result == "tails")
-                    stats.balence += n
+                    stats.balance += n
                   else
-                    stats.balence -= n
+                    stats.balance -= n
                 }
                 await setTimeoutPromise(3000)
                 save(6)
@@ -1467,7 +1463,7 @@ async function secound_town(){
             } 
             else if (game == "b"){
               let n = number_prompt("How much do you wish to bet? ")
-              if (n >  stats.balence){
+              if (n >  stats.balance){
                 await typewriter(ansi_red+"Invalid bet amount" + ansi_reset, 50);
                 await setTimeoutPromise(3000)
                 continue;
@@ -1476,7 +1472,7 @@ async function secound_town(){
 
                 if (stats.going_to_hell == undefined)
                   stats.going_to_hell = 0
-                stats.going_to_hell += Math.random*0.35; // Atmost 0.35 soul poits
+                stats.going_to_hell += Math.random*0.35; // At most 0.35 soul points
 
 
               let result = Math.floor(Math.random() * 37);
@@ -1494,31 +1490,31 @@ async function secound_town(){
                   color= number % 2 == 0 ? "red" : "black";
               typewriter(result + " " + color, 250);
               if (result == 0 && p_result != 0){
-                stats.balence-=n
+                stats.balance-=n
               }else if (p_result==result)
-                stats.balence+=n*35;
+                stats.balance+=n*35;
               else if (color==p_result)
-                stats.balence+=n;
+                stats.balance+=n;
               else if (p_result == "even" && number%2==0)
-                stats.balence+=n
+                stats.balance+=n
               else if (p_result == "odd" && number%2==1)
-                stats.balence+=n
+                stats.balance+=n
               else
-                stats.balence-=n
+                stats.balance-=n
               save(6)
               await setTimeoutPromise(3000)
 
             }
             else if (game == "c"){
               let n = number_prompt("How much do you wish to bet? ")
-              if (n >  stats.balence){
+              if (n >  stats.balance){
                 await typewriter(ansi_red+"Invalid bet amount" + ansi_reset, 50);
                 await setTimeoutPromise(3000)
                 continue;
               }
                 if (stats.going_to_hell == undefined)
                   stats.going_to_hell = 0
-                stats.going_to_hell += Math.random*0.075; // Atmost 0.075 soul poits
+                stats.going_to_hell += Math.random*0.075; // At most 0.075 soul points 
               let p_result = options_prompt("What is your guess (rock/paper/scissors): ", ["rock", "paper", "scissors"])
 
               let result = ["rock", "paper", "scissors"][Math.floor(Math.random()*3)];
@@ -1526,14 +1522,14 @@ async function secound_town(){
               await typewriter("The opponent got: "+ result, 200);
 
               if (p_result == "rock" && result=="scissors"){
-                stats.balence+=n*2;
+                stats.balance+=n*2;
               }else if (p_result == result){}
               else if (p_result == "paper" && result == "rock"){
-                stats.balence+=n*2;
+                stats.balance+=n*2;
               }else if (p_result == "scissors" && result == "paper"){
-                stats.balence+=n*2;
+                stats.balance+=n*2;
               }else{
-                stats.balence-=n;
+                stats.balance-=n;
               }
 
               save(6)
@@ -1555,7 +1551,7 @@ async function secound_town(){
       while (not_yet){
         not_yet = false;
         if (chance(10))
-          await typewriter(`"The priest is scamming people out of their money with indulgences, no other priest belives on those!"`, 50);
+          await typewriter(`"The priest is scamming people out of their money with indulgences, no other priest believes on those!"`, 50);
         else if (chance(10))
           await typewriter(`"I heard there is a dangerous killer going around!"`, 50);
         else if (chance(10))
@@ -1563,15 +1559,15 @@ async function secound_town(){
         else if (chance(10))
           await typewriter(`"Did you hear, the sheriff is issuing false bounties on mental patients and releasing them into the woods?!"`, 50);
         else if (chance(10)){
-          await typewriter(`"Hey, some morron took the demon sword out of its containment chamber in the woods. We kept it in the middle of nowhere to protect people!"`, 50);
+          await typewriter(`"Hey, some moron took the demon sword out of its containment chamber in the woods. We kept it in the middle of nowhere to protect people!"`, 50);
         }else if (chance(10)){
           await typewriter(`"The road to California is dangerous, makes you wonder why nobody takes the train?"`, 50);
         }else if (chance(10)){
-          await typewriter(`"Did you hear, a bear is attacking the mayor, think you can help?!"`, 50) //Effectivly infinate money
+          await typewriter(`"Did you hear, a bear is attacking the mayor, think you can help?!"`, 50) //Effectively infinite money
           if ("y" == options_prompt("(y/n) ", ['y', 'n'])){
               await fight(bear_animation, 100, BEAR_FIGHT_FRAMES[27]);
               await typewriter("The bear dropped 1500 dollars", 50)
-              stats.balence+=1500
+              stats.balance+=1500
               await setTimeoutPromise(2000)
           }else {await typewriter("Thanks anyways...", 50)}
         }else if (chance(10)){
@@ -1579,7 +1575,7 @@ async function secound_town(){
           if ("y" == options_prompt("(y/n) ", ['y', 'n'])){
               await fight(snake_animation, 40, SNAKE_FIGHT_FRAMES[21]);
               await typewriter("The demon dropped 500 dollars", 50)
-              stats.balence+=500
+              stats.balance+=500
 
               await setTimeoutPromise(2000)
           }else {await typewriter("Thanks anyways...", 50)}
@@ -1589,7 +1585,7 @@ async function secound_town(){
               await fight(demon_animation, 5000, DEMON_FIGHT_FRAMES[40])
               
               await typewriter("The demon dropped 5000 dollars", 50)
-             stats.balence+=5000
+             stats.balance+=5000
 
               await setTimeoutPromise(2000)
           }else {await typewriter("Thanks anyways...", 50)}
@@ -1598,7 +1594,7 @@ async function secound_town(){
           if ("y" == options_prompt("(y/n) ", ['y', 'n'])){
               await fight(man_animation, 90, MAN_HURT_FRAMES[40], false, 40);
               await typewriter("The guy dropped 5000 dollars", 50)
-             stats.balence+=5000
+             stats.balance+=5000
              stats.going_to_hell+=0.1 // They asked for it
 
               await setTimeoutPromise(2000)
@@ -1637,7 +1633,7 @@ async function rocks_event(){
   clear();
   await typewriter("You are riding through a canyon, 200 feet clifts on both sides.\n", 150)
 
-  await typewriter("You must be careful, an Avalanche Warning was clearly marked at the enterence.\n", 150)
+  await typewriter("You must be careful, an Avalanche Warning was clearly marked at the entrance.\n", 150)
 
   await typewriter("But this is the only path.\n", 150)
   await setTimeoutPromise(5000)
@@ -1689,7 +1685,7 @@ async function rocks_event(){
 }
 async function new_wagon_event(){
   clear();
-  await typewriter("You exit the canyon. But you have lost your most valuble possession.\n", 50);
+  await typewriter("You exit the canyon. But you have lost your most valuable possession.\n", 50);
   await typewriter("You are in a dense forest.\n", 50);
   await typewriter("Your only option now is to forage.\n", 50);
   await setTimeoutPromise(2000)
@@ -1751,8 +1747,23 @@ async function new_wagon_event(){
   save(9)
 }
 
+async function weather_event(){
+  clear();
+  await typewriter("You build yourself a new wagon, and now it is time to set out.", 60)
+  await setTimeoutPromise(3000)
+  clear()
+  console.log(BIG_HOURS)
+  await setTimeoutPromise(2000)
+  clear();
+  console.log(BIG_LATER)
+  await setTimeoutPromise(2000)
+  clear();
 
-// The save game system works, and is also susceptible to save hacking, which I like
+  await typewriter("What it that? You hear a rumbling in the distance.\n", 60)
+  await typewriter("It sounds, like a train?.\n", 100)
+  await typewriter("But that could not be, you are in the middle of nowhere.\n", 50)
+  await typewriter(".......", 250)
+}
 
 
 // -1 means not saved before, overwise last saved level
@@ -1767,6 +1778,7 @@ async function game(save_stage) {
   if (6 >= save_stage) await secound_town();
   if (7 >= save_stage) await rocks_event();
   if (8 >= save_stage) await new_wagon_event();
+  if (9 >= save_stage) await weather_event();
 
 
 
