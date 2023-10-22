@@ -1702,10 +1702,55 @@ async function new_wagon_event(){
   await setTimeoutPromise(10000)
   prompt("Press any key")
   clear();
-  await typewriter("The fox looks up at you with a confused look. You can't help but feel a connection towards it.\n", 50)
+  await typewriter("The fox looks up at you with a curious look. You can't help but feel a connection towards it.\n", 50)
   await typewriter("The fox stands up and starts walking. He looks back at you, and you feel he wants you to follow.\n", 50)
-  if ("y"==options_prompt("Do you follow? (y/n) ", ["y", "n"]))
+  if ("y"==options_prompt("Do you follow? (y/n) ", ["y", "n"])){
+    clear();
+    await typewriter("You follow the fox. He seems to know where he is going. You keep walking deeper into the woods.\n", 50)
+    await typewriter("You see something. It is some sort of statue\n", 50)
+    await setTimeoutPromise(5000)
+    clear();
+    console.log(STATUE)
+    await setTimeoutPromise(4000)
+    if (stats.temple_rooms_states[2]==false)
+      prompt("It is the same statue from the temple, but you are still unsure what it means (enter to continue)")
+    else
+      prompt("It is cool, but you are unsure what it means (enter to continue)")
+    clear();
+    await typewriter("\nBut the fox keeps going, and looks back.\n", 50)
+    await setTimeoutPromise(2000)
+    await typewriter("You continue to follow.\n", 50)
+    await setTimeoutPromise(2000)
+    await typewriter("But then, he stops.\n")
+    await setTimeoutPromise(2000)
+    await typewriter("There is a pile of wood!\n")
+    await setTimeoutPromise(2000)
+    await typewriter("You are so excited you lose track of the fox.\n")
+    await setTimeoutPromise(2000)
+    await typewriter("By the time you relize, he is gone. You are forever indebted to the fox\n")
+    stats.wagon = 5;
+  }else{
+    clear();
+    await typewriter("You decide not to follow the fox, it is just a fox after all.\n", 50)
+    await setTimeoutPromise(2000)
+    await typewriter("If you want a new wagon, you must do this yourself.\n", 50)
+    await setTimeoutPromise(2000)
+    await typewriter("You do not have an axe. But your trusty "+ name_of_shovel(stats.shovel) +" will do", 50)
+    stats.wagon = Math.min(stats.shovel+1, 7); // Better the shovel, better the wagon
+  }
+  prompt("Press enter to continue")
+  clear();
+  console.log(BIG_HOURS)
+  await setTimeoutPromise(2000)
+  clear();
+  console.log(BIG_LATER)
+  await setTimeoutPromise(2000)
+  clear();
+  await typewriter("It was hard, but you finally manage to build a new wagon.\n", 50)
+  await typewriter("And a good quality wagon if you don't say so yourself. You make the "+name_of_wagon(stats.wagon) , 50)
+  save(9)
 }
+
 
 // The save game system works, and is also susceptible to save hacking, which I like
 
