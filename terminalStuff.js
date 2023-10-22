@@ -6,8 +6,6 @@ const { setTimeout: setTimeoutPromise } = require('node:timers/promises');
 
 
 
-
-
 // https://textkool.com/en/ascii-art-generator?hl=default&vl=default&font=Pagga&text=hours%20later
 const BIG_NAME = `
  █▀▀ █▀█ █   ▀█▀ █▀▀ █▀█ █▀▄ █▀█ ▀█▀ █▀█ █▀█   ▀█▀ █▀▄ █▀█ ▀█▀ █  
@@ -107,6 +105,7 @@ const BIG_SPLAT = `
  ▀▀▀ ▀   ▀▀▀ ▀ ▀  ▀ `
 
 
+
 // https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color#41407246
 const ansi_reset = "\x1b[0m"
 const ansi_red = "\x1b[31m"
@@ -123,7 +122,7 @@ const ansi_dark_purple = "\x1b[35m"
 // but gives great atmosphere
 async function typewriter(text, interval){
   if (!interval) interval = 50
-    
+
   let activeCodes = ""; 
   let isAnsi = false
   for (let char of text){
@@ -216,7 +215,7 @@ for (let x = 0; x != 18; x++){
 // converted with https://www.text-image.com/convert/ascii.html
 // Snake made in gimp, and man taken from bear fight
 const SNAKE_FIGHT = `
-                                                                                :~P##G!
+                                                                                :~P##G!   
                                                                                 ^J&&#&Y   
                                                                                   YG&&G!  
                                                                                   :5&#&&5:
@@ -234,7 +233,7 @@ const SNAKE_FIGHT = `
 @@@@@P          ::::                                                              ?&&###&P
 @@@@J                                                                              ?######
                                                                                    :Y&&&&P
-                                                                                  :5PGGPY~
+                                                                                  :5PGGPY~ 
 `
 // Animation frames of snake apreaching
 let SNAKE_FIGHT_FRAMES = [];
@@ -262,6 +261,67 @@ for (let x = 0; x != 20; x++){
   }
   SNAKE_HURT_FRAMES.push(frame);
 }
+
+
+
+
+const WIZZARD_FIGHT = ` 
+                                                                          `+ansi_red+`:   GB   . `+ansi_reset+`
+                                                                         `+ansi_red+`.@~?B@@B?^@^  `+ansi_reset+`             
+                                                                         `+ansi_red+`.&&@@@@@@&&:   `+ansi_reset+`            
+                `+ansi_red+`.7`+ansi_reset+`                                                          @@@@@@            
+            `+ansi_red+`G^ ^G@J: ?J`+ansi_reset+`                                                    J@@@@@@#.                
+           `+ansi_red+` &@#@@@@@#@P`+ansi_reset+`                                                    #@@@@@@@Y                
+            :7@@@@@@5^.                                           ~#!      ?&@@@@@G.                
+             .@@@@@@B                                              .GB:      ^#@5                   
+              :B@@BY:                                                ^BP..~7.:B@7.                  
+         :Y&@@GB@@?YG^                                                ^&@&##P!G@~YPJ^               
+      :5&@@G?@@@@@@@&GB7. :^:!!!!JY:                                  ?5:.#&.  J@   :^               
+      J@@5.  @@@@@@@7 .7PJ#&5^.....                                       ?~  Y@                    
+       .    .@@@@@@@7                                                         Y@                    
+            ?@@@@@@@~                                                         Y@                    
+            B@@@@@@@7                                                        ?#GB:                  
+         .~B@@@@@@@@&                                                      !#J  ^GG.                
+   #@&#&&@@@@@@@@@@@@#:                                                  .#P.     !#J               
+  `
+
+// Animation frames of snake apreaching
+let WIZZARD_FIGHT_FRAMES = [];
+for (let x = 0; x != 30; x++){
+  let frame = "";
+  let nline = 0;
+  for (let line of WIZZARD_FIGHT.split("\n")){
+    nline +=1;
+    if (line.length > 30){
+      frame+=line.substring(0, 35) + " ".repeat(x)  +line.substring(67, line.length) + "\n"
+    }else{
+      frame+=line+"\n";
+    }
+  }
+  WIZZARD_FIGHT_FRAMES.push(frame);
+}
+let WIZZARD_HURT_FRAMES = [];
+for (let x = 0; x != 30; x++){
+  let frame = "";
+  let nline = 0;
+  for (let line of WIZZARD_FIGHT.split("\n")){
+    nline +=1;
+    if (line.length > 30){
+      let mid = " ".repeat(30)
+      if (nline == 12)
+        mid = mid.substring(x, mid.length-1) + "*" + mid.substring(0, x)
+      frame+=line.substring(0, 35) + mid +line.substring(67, line.length) + "\n"
+    }else{
+      frame+=line+"\n";
+    }
+  }
+  WIZZARD_HURT_FRAMES.push(frame);
+}
+
+
+
+
+
 
 
 
@@ -785,6 +845,50 @@ B@@@@@@@@@@@@@!
   !@@@@@@@&P!. 
    75GBGY!.  `
 
+const TOWER = `
+                ......                                            
+           .^!77?`+ansi_red+`?7?7?7`+ansi_reset+`!~^:                                       
+          ^JYJ`+ansi_red+`??7777777?`+ansi_reset+`JJJ?^                                     
+         .???`+ansi_red+`?777?JJ????7`+ansi_reset+`77?J.                                    
+         .7YJ7`+ansi_red+`7?7JYYY7777`+ansi_reset+`JY??:                                    
+          75Y?YYY`+ansi_red+`?????Y`+ansi_reset+`YJJ5Y~                                     
+         .??7JYJJ?777JJ5Y7?J^                                     
+        .^J??JYJJJ???JJYJ??Y:                                     
+      .!???7!7?77?77?!777??J7~:.                                  
+      ~YJ77?J!JY^JJ~YY^JJ!?!7??7.                                 
+      :5JJ7JJ~JJ^J?^J?:JY^YY7Y5~                                  
+      ^JJ?7J?~J?^JJ~Y?^Y?^Y?!5J.                                  
+      !YYY?YJ7JJ?JJ?YJ7Y?757JY?.                                  
+     ^JJ?JJ????7??????????J?YY7                                   
+     :J????J~J?^J?^J?~JJ7Y???J?.                                  
+     :?7?7?J!J?^JJ~J?~JJ!J!?Y7^                                   
+     ~J?YJJJJJJ?JJJYJJYYJJ7JY!:                                   
+    :?JJ????7??!!?J7J?7??JJJJ?^                                   
+    .??!J77J~??^!J7~J?^J7!J?YJ^                                   
+    :!7!J7??~??:7J~!J7~J7!J!J?                                    
+    ^7?7J?JJ?YJ!JY7?J7?Y7JY7J7                                    
+   .?JJ????????????J?JJJJJYJJ7                                    
+   .?J!??!??~??^??^?7!??7?7?J?.                                   
+   :??!77!7?!J7~??:J?~??~?7~J^                                    
+   ~???????J?J?!??^J?~J?~J7~?:                                    
+  ^JJJ??J?JJJJJJJJ?JJ?YJ7J?7?.                                    
+  .7?!??!?J!??!7J???JJJJJJJJJ^                                    
+  .77^J7^??:??:!J~!??^J?~???J^                                    
+  ^77^J7~??^J?:7J~7?!^J7^J!7?                                     
+ :???7JJ?JJ?JJ7JJ?JJ77J?7Y!J7                                     
+ .J?77?7?7??7??7???7????JJJY?:                                    
+ .J7~J!:??^??~~JJ^??~??7?7??J:                                    
+ ^J!!J!^??^JJ^~JJ:J?^??^?J!Y!                                     
+:7J77J?!JJ~JJ~7J?:JJ^??~JJ!Y~                                     
+~JJJJ?JJJJJYYJJJJJYY?YY?YY?Y~                                     
+^J?JJ??J?7?7???7???J????JJJY7                                     
+7YJ7?Y7?75?7------Y75?Y?JJJ?:                                     
+.?J?^!J~^~Y!|    |!!~Y77!5??J:                                     
+:?J?^!J~^!Y!|    |^^^Y!^^Y7!?:                                     
+^?Y?^7J~^!Y|    `+ansi_red+`*`+ansi_reset+`|^^~Y!^^Y77?.                                     
+!?Y?^7J~^7JL____|^^^~Y!^^577?.                                     
+~7??!??7!??7!!7??7!77J?!7J??7.                                     
+   .................... ....    `
 
 
 
@@ -793,6 +897,29 @@ B@@@@@@@@@@@@@!
 function clear() {
   process.stdout.write('\u001B[2J\u001B[0;0f');
 }
+
+async function PressAnyKey(){
+  let startTime = Date.now();
+
+  process.stdout.write("Press any key to continue. ")
+  process.stdin.setRawMode( true );
+  process.stdin.setEncoding( 'utf8' );
+  process.stdin.resume();
+
+  let running = true;
+  process.stdin.on('data', function(key) {
+    if (key && Date.now()-startTime > 100)
+      running = false;
+  });
+  while (running) {
+    await setTimeoutPromise(50);
+  }
+  process.stdin.setRawMode( false );
+  process.stdin.pause();
+  console.log()
+}
+
+
 function options_prompt(question, valid_options) {
   while (true) {
     let answer = prompt(question).toLowerCase().trim();
@@ -898,7 +1025,17 @@ function chance(percent){
   return Math.random() <= (percent/100)
 }
 
-
+ const BIG_WELCOME =`
+ █ █ █▀▀ █   █▀▀ █▀█ █▄█ █▀▀
+ █▄█ █▀▀ █   █   █ █ █ █ █▀▀
+ ▀ ▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀ ▀ ▀▀▀ `+ansi_yellow+`
+ ▀█▀ █▀█
+  █  █ █
+  ▀  ▀▀▀ `+ansi_dark_purple+`
+ █▀▀ █▀█ █   ▀█▀ █▀▀ █▀█ █▀▄ █▀█ ▀█▀ █▀█  
+ █   █▀█ █    █  █▀▀ █ █ █▀▄ █ █  █  █▀█  
+ ▀▀▀ ▀ ▀ ▀▀▀ ▀▀▀ ▀   ▀▀▀ ▀ ▀ ▀ ▀ ▀▀▀ ▀ ▀  
+ ` + ansi_reset
 module.exports = {
   DEAD_GUY, TEMPLE, DEMON, DEMON_FIGHT_FRAMES, DEMON_HURT_FRAMES,
   BIG_WIN, ansi_green, BIG_CURE, typewriter, BIG_DAY,
@@ -908,8 +1045,8 @@ module.exports = {
   SNAKE_FIGHT_FRAMES, blue_cyan_backdrop, MAN_FIGHT_FRAMES, MAN_HURT_FRAMES, SNAKE_FIGHT,
   SNAKE_HURT_FRAMES, BIG_SPLAT,
   BIG_BEAR, BIG_CONFUSION,
-  BIG_NAME,
-  BIG_SHOP_TEXT, CANYON_WALL,
+  BIG_NAME, WIZZARD_FIGHT_FRAMES, WIZZARD_HURT_FRAMES,
+  BIG_SHOP_TEXT, CANYON_WALL, BIG_WELCOME,
   BIG_START,
   BIG_SNAKE, BIG_TORNADO,
   BIG_COWARD, ROCK_1, ROCK_2, ROCK_3,
@@ -930,8 +1067,9 @@ module.exports = {
   ansi_dark_purple,
   name_of_wagon,
   name_of_sword,
+  PressAnyKey,
   name_of_shovel,
-  BIG_HOURS,
+  BIG_HOURS, TOWER,
   BIG_THAT, BIG_SUNLIGHT,
   BIG_NIGHT,
   BIG_LATER, ansi_cyan_bg

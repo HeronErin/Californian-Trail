@@ -6,13 +6,13 @@ const {dondge_rock} = require("./strafe")
 const {
   DEAD_GUY, TEMPLE, DEMON, DEMON_FIGHT_FRAMES, DEMON_HURT_FRAMES, BIG_DAY,
   BIG_WIN, ansi_green, BIG_CURE, typewriter,
-  STATUE, SWORD, FOX,
+  STATUE, SWORD, FOX,PressAnyKey,
   HURT_BEAR_FRAMES, ansi_cyan_bg, blue_cyan_backdrop, MAN_FIGHT_FRAMES, MAN_HURT_FRAMES,
   BEAR_FIGHT_FRAMES,
   SNAKE_FIGHT_FRAMES, BIG_SPLAT,
   SNAKE_HURT_FRAMES,
   BIG_BEAR, BIG_SUNLIGHT,
-  BIG_NAME,
+  BIG_NAME, TOWER,
   BIG_SHOP_TEXT, number_prompt,
   BIG_START, BIG_TORNADO,
   BIG_SNAKE,
@@ -23,7 +23,7 @@ const {
   BIG_3,
   clear,
   chance,
-  options_prompt,BIG_CONFUSION,
+  options_prompt,BIG_CONFUSION, BIG_WELCOME,
   length_prompt,
   get_name,
   ansi_reset,
@@ -39,7 +39,7 @@ const {
   BIG_THAT,
   BIG_NIGHT,
   BIG_LATER
-} = require('./terminalStuff');
+,WIZZARD_FIGHT_FRAMES, WIZZARD_HURT_FRAMES} = require('./terminalStuff');
 
 
 var stats = {
@@ -278,7 +278,42 @@ async function snake(){
   await typewriter("You made it past the snake.", 50)
   return true
 }
+async function WIZZARD_ANIMATION(offset){
+  let len = 29
+  let frames = WIZZARD_FIGHT_FRAMES;
+  if (offset) {
+    frames = WIZZARD_HURT_FRAMES;
+  }
 
+    let start = 0;
+    if (!stats.crown_of_chaos)
+      start= 4
+    for (let x = len; x != 0; x--){
+      clear();
+      let lines = frames[x].split("\n");
+      console.log(lines.slice(start, lines.length).join("\n"))
+      console.log("\nHealth: " + stats.health)
+      console.log("Enemy Health: " + stats.enemy_health)
+      console.log("First Aid Kits: " + stats.first_aid_kits)
+      await setTimeoutPromise(20 + Math.abs(12-x));
+    }
+  
+  if (!offset){
+    for (let x = len; x != 0; x--){
+      clear();
+      let lines = frames[len-x].split("\n");
+      console.log(lines.slice(start, lines.length).join("\n"))
+      console.log("\nHealth: " + stats.health)
+
+      console.log("Enemy Health: " + stats.enemy_health)
+      console.log("First Aid Kits: " + stats.first_aid_kits)
+      if (!offset)
+        await setTimeoutPromise(20 + Math.abs(12-x));
+      else
+        await setTimeoutPromise(10);
+    }
+  }
+}
 async function snake_animation(offset){
   let len = 20
   let frames = SNAKE_FIGHT_FRAMES;
@@ -504,7 +539,7 @@ async function first_encounter(){
   clear();
   await typewriter("You are ready to start out on your journey, with your trusty "+ name_of_wagon(stats.wagon) +". With the "+ name_of_sword(stats.sword) + " your family has been passing down for generations. You are excited, and if anything gets in your way you always have your "+name_of_shovel(stats.shovel)+".", 50);
   await setTimeoutPromise(2000);
-  prompt("Press enter to continue");
+  await PressAnyKey();
   await setTimeoutPromise(1000);
   await typewriter("\n\nYou step out the gates of your small town.\n", 50)
   await setTimeoutPromise(4500);
@@ -531,7 +566,7 @@ async function wilderness_1_event1(){
   }else{
     await typewriter("You are unsure how you got such a great wagon, and believe nothing can stop you now.", 50)
   }
-  prompt("Press enter to continue");
+  await PressAnyKey();
 
   clear();
   console.log(BIG_3);
@@ -782,7 +817,7 @@ async function temple_event(){
   await setTimeoutPromise(5000)
   await typewriter("And you have nowhere to go but forward\n", 50)
 
-  prompt("Press enter to continue")
+  await PressAnyKey();
   clear();
   console.log(BIG_2);
   await setTimeoutPromise(1500)
@@ -1038,7 +1073,7 @@ async function shortcut_event(){
     await setTimeoutPromise(2000)
     await typewriter("But you are too far down now to turn back, so you continue down the path.\n", 50)
     await setTimeoutPromise(2000)
-    prompt("Press enter to continue.")
+    await PressAnyKey();
     clear();
     console.log(BIG_3);
     await setTimeoutPromise(2000)
@@ -1065,7 +1100,7 @@ async function shortcut_event(){
       await typewriter("You see something approaching in the woods", 50)
       await setTimeoutPromise(1000);
       console.log(ansi_red+BIG_BEAR+ansi_reset)
-      prompt("Press enter to continue")
+      await PressAnyKey();
 
       
       await fight(bear_animation, 100, BEAR_FIGHT_FRAMES[27]);
@@ -1129,7 +1164,7 @@ async function shortcut_event(){
       await typewriter("He similes, a cruel, menacing smile.", 50)
       await typewriter("He says \"No matter, you are far enough from town anyways\"", 50)
     }
-    prompt("Press enter to continue")
+    await PressAnyKey();
     clear();
     stats.health = 100; 
     await fight(man_animation, 90, MAN_HURT_FRAMES[40], false, 40);
@@ -1152,7 +1187,7 @@ async function shortcut_event(){
 
 
     if (option == "b"){
-      prompt("Press enter to continue");
+      await PressAnyKey();
 
       clear();
       await typewriter("You have defeated your enemy. But are still in the middle of nowhere.\n", 50)
@@ -1190,7 +1225,7 @@ async function shortcut_event(){
           let new_s = Math.min(7, stats.shovel+1); // No more than World Clearer
           await typewriter("You no longer have a "+name_of_shovel(stats.shovel)+" but a "+name_of_shovel(new_s), 50)
           stats.shovel = new_s;
-          prompt("Press enter to continue")
+          await PressAnyKey();
           clear();
           await typewriter("You enter the cave.\n", 50)
           await setTimeoutPromise(2000);
@@ -1654,14 +1689,14 @@ async function rocks_event(){
   await typewriter("Rocks are falling down, the you must dodge them.\n", 50)
 
 
-  prompt("Press enter to continue")
+  await PressAnyKey();
   clear();
   while (!await dondge_rock(true, 20, 10, 3, 5, 25, 1, 60)){
     clear();
     console.log(ansi_red+BIG_DEAD+ansi_reset)
     await setTimeoutPromise(1000)
   }
-  prompt("Press enter to continue")
+  await PressAnyKey();
   clear();
   while (!await dondge_rock(true, 40, 24, 8, 9, 25, 2, 64)){
     clear();
@@ -1669,7 +1704,7 @@ async function rocks_event(){
     await setTimeoutPromise(1000)
   }
 
-  prompt("Press enter to continue")
+  await PressAnyKey();
   clear();
   while (!await dondge_rock(false, 20, 10, 3, 9, 25, 3, 95)){
     clear();
@@ -1735,7 +1770,7 @@ async function new_wagon_event(){
     await typewriter("You do not have an axe. But your trusty "+ name_of_shovel(stats.shovel) +" will do", 50)
     stats.wagon = Math.min(stats.shovel+1, 7); // Better the shovel, better the wagon
   }
-  prompt("Press enter to continue")
+  await PressAnyKey();
   clear();
   console.log(BIG_HOURS)
   await setTimeoutPromise(2000)
@@ -1763,7 +1798,7 @@ async function weather_event(){
   await typewriter("What is that? You hear a rumbling in the distance.\n", 60)
   await typewriter("It sounds, like a train?.\n", 100)
   await typewriter("But that could not be, you are in the middle of nowhere.\n", 50)
-  await typewriter(".......", 250)
+  await typewriter(".......", 350)
   clear();
   console.log(ansi_red+BIG_TORNADO+ansi_reset)
   await setTimeoutPromise(2000)
@@ -1775,14 +1810,14 @@ async function weather_event(){
   await typewriter("You are in trouble now.\n", 50)
   await setTimeoutPromise(1000)
   await typewriter("The tornado has you in it's grips, it is mere yards away.", 50)
-  await typewriter(".........\n", 250)
+  await typewriter(".........\n", 350)
   clear();
   await typewriter("It begins to lift you again. But this time it is not letting go\n", 50)
   await typewriter("It lifts you 10, 20, 50, 100 feet\n", 150)
   await typewriter("You hold on with all you can\n", 50)
   console.log("You have 2 options")
   console.log("A. Jump, and hope the tornado slows your fall")
-  console.log("C. See where the tornado takes you")
+  console.log("B. See where the tornado takes you")
   
 
   if ("a"==options_prompt(": ", ["a", "b"])){
@@ -1837,7 +1872,7 @@ async function lost_event(){
   }
   clear();
   await typewriter("You see something in the distance. You walk towards it", 50)
-  await typewriter(".......", 250)
+  await typewriter(".......", 350)
   clear();
   console.log(STATUE)
   await setTimeoutPromise(4000)
@@ -1848,32 +1883,33 @@ async function lost_event(){
   else 
     await typewriter("It is cool, but you are unsure what it means\n", 100)
 
-  prompt("Press enter to continue")
+  await PressAnyKey();
   clear();
 
-  await typewriter("You continue on. You have no idea where you are\nn", 50)
+  await typewriter("You continue on. You have no idea where you are\n", 50)
 
   if (!stats.has_followed_fox && stats.wagon == -1)
     await typewriter("You must, once again, build a new wagon\n", 50)
   else if (stats.wagon == -1)
     await typewriter('No friendly fox to help you this time. You must build a new wagon yourself', 50)
 
-  await typewriter("You do not have an axe. But your trusty "+ name_of_shovel(stats.shovel) +" will do", 50)
+  if (stats.wagon == -1){
+    await typewriter("You do not have an axe. But your trusty "+ name_of_shovel(stats.shovel) +" will do", 50)
 
-  await setTimeoutPromise(1000)
-  stats.wagon = Math.min(stats.shovel+1, 7); // Better the shovel, better the wagon
+    await setTimeoutPromise(1000)
+    stats.wagon = Math.min(stats.shovel+1, 7); // Better the shovel, better the wagon
 
-  await setTimeoutPromise(6000)
-  clear();
-  console.log(BIG_HOURS)
-  await setTimeoutPromise(2000)
-  clear();
-  console.log(BIG_LATER)
-  await setTimeoutPromise(2000)
-  clear();
-  await typewriter("It was hard, but you finally manage to build a new wagon. Hope this pattern doesn't continue\n", 50)
-  await typewriter("And a good quality wagon if you don't say so yourself. You make the "+name_of_wagon(stats.wagon) +"\n", 50)
-  
+    await setTimeoutPromise(6000)
+    clear();
+    console.log(BIG_HOURS)
+    await setTimeoutPromise(2000)
+    clear();
+    console.log(BIG_LATER)
+    await setTimeoutPromise(2000)
+    clear();
+    await typewriter("It was hard, but you finally manage to build a new wagon. Hope this pattern doesn't continue\n", 50)
+    await typewriter("And a good quality wagon if you don't say so yourself. You make the "+name_of_wagon(stats.wagon) +"\n", 50)
+  }
   
   await typewriter("But before you leave, you notice something. A crown, a crimson, "+ansi_red+"blood"+ansi_reset+" colored, crown.\n", 50)
 
@@ -1922,6 +1958,7 @@ async function strange_animals(){
   if (stats.crown_of_chaos){
     await typewriter("The snake looks at you, it freezes, and walks away.\n", 50)
     await typewriter("You are starting to become confused.\n", 50)
+    await setTimeoutPromise(10000)
   }
   else{
     await fight(snake_animation, 40, SNAKE_FIGHT_FRAMES[21]);
@@ -1934,19 +1971,17 @@ async function strange_animals(){
 }
 async function river_travelers(){
   clear();
-  await typewriter("You are continuing to head west. Still unsure where you are\n", 50)
-  await setTimeoutPromise(2000)
-  await typewriter("But you are traveling next to the river, with hopes that you might find civilization\n", 50)
+  await typewriter("You are traveling next to the river, with hopes that you might find civilization\n", 50)
   await setTimeoutPromise(2000)
   await typewriter("You start to hear something. It is the sound of splashing, and of talking\n", 50)
   await setTimeoutPromise(2000)
   await typewriter("It must be other people!\n", 50)
-  await typewriter("You look around, they are behind you\n", 50)
+  await typewriter("They are ahead of you\n", 50)
   await typewriter("They don't look like indians\n", 50)
   await typewriter("But they also don't like civilized\n", 50)
-  await typewriter('.......', 250)
+  await typewriter('.......', 350)
   await typewriter("Do you hide in the woods and let them pass by, or make your presence known?", 50)
-  if ("y"==options_prompt("(y/n) ", ["y", "b"])){
+  if ("y"==options_prompt("(y/n) ", ["y", "n"])){
     clear();
     await typewriter("You hide in the woods, they do not look like the friendly type anyways\n", 50)
     await setTimeoutPromise(1000)
@@ -1972,7 +2007,7 @@ async function river_travelers(){
     await typewriter(`Their boat is now out of ear shot, you come out of the woods and head in the oposite direction.\n`, 50)
     await typewriter(`They must be coming from California, or atleast the west\n`, 50)
   }else{
-    await typewriter("You walk into the sunlight, the look at you, you look at them.\n", 60)
+    await typewriter("You walk into the sunlight, they look at you, you look at them.\n", 60)
     await setTimeoutPromise(1000)
     if (stats.crown_of_chaos){
       await typewriter("Their eyes open in relization\n", 50)
@@ -1988,17 +2023,146 @@ async function river_travelers(){
       await typewriter("After about a minute of silence, they look up, their faces more pail then you have seen before", 50)
       await setTimeoutPromise(1000)
       await typewriter("They turn their boat around, and sail back from the direction they came", 50)
+      stats.they_saw=true
 
     }else{
       await typewriter("They stop taking, and continue on east, the oposite direction as you\n", 50)
+      stats.they_saw=true
     }
   }
 
 
 
   save(13);
-
 }
+
+
+
+
+async function the_tower() {
+  clear();
+  
+
+
+
+  console.log(BIG_HOURS)
+  await setTimeoutPromise(2000)
+  clear();
+  console.log(BIG_LATER)
+  await setTimeoutPromise(2000)
+  clear();
+
+  await typewriter("You are still walking beside a river\n", 50)
+  await setTimeoutPromise(2000)
+  await typewriter("You begin to see something in the distance.\n", 50)
+  await setTimeoutPromise(2000)
+  await typewriter("It is a tower.\n", 350)
+
+  clear();
+
+  console.log(TOWER)
+  await setTimeoutPromise(2000)
+  if (options_prompt("Do you enter (y/n)", ["y", "n"]) == 'y'){
+    clear();
+    await typewriter("You enter the tower\n", 50)
+    await typewriter("Inside you see a man. He is wearing a long black robe and a crimson crown.\n", 50)
+    if (stats.crown_of_chaos)
+      await typewriter(`"I see you have something I want" He say with a menacing smile`)
+    if (stats.crown_of_chaos && stats.they_saw)
+      await typewriter(`"My men have told me about you"`)
+    if (!stats.crown_of_chaos){
+      await typewriter('"Who the hell are you, and what are you doing in my base of operations?"')
+      await typewriter(`"No matter, I will make you leave"`)
+    }
+
+    
+    await PressAnyKey();
+
+    let lines = WIZZARD_FIGHT_FRAMES[WIZZARD_FIGHT_FRAMES.length-1].split("\n");
+    let start=0;
+    if (!stats.crown_of_chaos)
+    start = 4;
+    await fight(WIZZARD_ANIMATION, 300, lines.slice(start, lines.length).join("\n"), false, 30)
+    clear();
+
+    await typewriter(`"You have defeated me"`)
+    await typewriter(`"It is now up to you to lead the order of Tkyshi"`)
+    if (!stats.crown_of_chaos){
+      await typewriter(`"Take this" The man hands you his crown`)
+    }
+
+    if ("y"==options_prompt("Do you stop your adventure and lead a cult? (y/n) ", ["y", "n"])){
+      clear();
+      console.log(ansi_red+BIG_CONFUSION+ansi_reset)
+      await setTimeoutPromise(15000)
+      console.log(ansi_yellow+"You have gotten the cult leader ending"+ansi_reset)
+      process.exit()
+    }
+    await typewriter(`You kick the old man`)    
+
+
+
+    await typewriter(`And you take his 15000 dollars along with the crown`)
+    stats.balance+=15000
+    stats.artifacts.push("Occult crown")
+
+
+    if ("y"==options_prompt("Do explore the tower? (y/n) ", ["y", "n"])){
+      clear();
+      await typewriter(`You climb the tower to see what it contains\n`)
+
+      await typewriter(`You see a snake, it looks at you, you look at it. And it follows you.\n\nYou are now it's master.`)
+
+      let name = length_prompt("What do you name your snake: ", 2)
+      stats.snake_name = name
+      stats.has_snake = true
+
+      clear();
+      await typewriter("You continue on, in the next floor you find a circle. It has a large pentagram.\n")
+
+      if ('y'==options_prompt("Do you ask a cult follower about it? (y/n) ", ['y', 'n'])){
+        await typewriter(`"S, Sir, that is the circle the crown bearer can summon the beast"\n`)
+
+        await typewriter("You walk away as soon as you hear that.")
+
+      }
+
+      await typewriter("You go the the next floor. Then you see something")
+
+      await typewriter("............", 400)
+
+      clear();
+
+      console.log(STATUE)
+
+      await PressAnyKey();
+
+      await typewriter("At this point, you decide to leave")
+
+
+
+
+
+    }
+    await typewriter(`The cult followers watch in amazement while you walk out`)
+    save(14)
+
+
+
+  }else{
+    clear();
+    await typewriter("You walk on past, ignoring all potential adventurer inside.", 50)
+    await setTimeoutPromise(2000)
+  }
+}
+
+async function california(){
+  await typewriter(BIG_WELCOME)
+  await typewriter("Congrats, you have made it to the end of the game.")
+  await typewriter("The artifacts you have collected are\n + " + stats.artifacts.join("\n + "))
+}
+
+
 // -1 means not saved before, overwise last saved level
 async function game(save_stage) {
   if (save_stage == -1)  save(0);
@@ -2015,6 +2179,9 @@ async function game(save_stage) {
   if (10 >= save_stage) await lost_event();
   if (11 >= save_stage) await strange_animals();
   if (12 >= save_stage) await river_travelers();
+  if (13 >= save_stage) await the_tower();
+  if (14 >= save_stage) await california();
+
 
 
 
@@ -2025,7 +2192,7 @@ function save(stage){
     stats.last_level = stage;
     let code = btoa(JSON.stringify(stats)); // Encode with base64 
     console.log("This is your save code, keep it somewhere save: " + code)
-    prompt("Press enter to continue");
+    prompt("Press enter to continue.")
     clear();
   }
 }
