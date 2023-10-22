@@ -96,6 +96,17 @@ const BIG_SUNLIGHT = `
  █▀▀ █ █ █▀█ █   ▀█▀ █▀▀ █ █ ▀█▀
  ▀▀█ █ █ █ █ █    █  █ █ █▀█  █ 
  ▀▀▀ ▀▀▀ ▀ ▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀ ▀  ▀ `
+
+const BIG_TORNADO= `
+ ▀█▀ █▀█ █▀▄ █▀█ █▀█ █▀▄ █▀█
+  █  █ █ █▀▄ █ █ █▀█ █ █ █ █
+  ▀  ▀▀▀ ▀ ▀ ▀ ▀ ▀ ▀ ▀▀  ▀▀▀`
+const BIG_SPLAT = `
+ █▀▀ █▀█ █   █▀█ ▀█▀
+ ▀▀█ █▀▀ █   █▀█  █ 
+ ▀▀▀ ▀   ▀▀▀ ▀ ▀  ▀ `
+
+
 // https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color#41407246
 const ansi_reset = "\x1b[0m"
 const ansi_red = "\x1b[31m"
@@ -111,6 +122,8 @@ const ansi_dark_purple = "\x1b[35m"
 // This was HARD to figure out how to work with ansi codes
 // but gives great atmosphere
 async function typewriter(text, interval){
+  if (!interval) interval = 50
+    
   let activeCodes = ""; 
   let isAnsi = false
   for (let char of text){
@@ -893,12 +906,12 @@ module.exports = {
   HURT_BEAR_FRAMES,
   BEAR_FIGHT_FRAMES,
   SNAKE_FIGHT_FRAMES, blue_cyan_backdrop, MAN_FIGHT_FRAMES, MAN_HURT_FRAMES, SNAKE_FIGHT,
-  SNAKE_HURT_FRAMES,
+  SNAKE_HURT_FRAMES, BIG_SPLAT,
   BIG_BEAR, BIG_CONFUSION,
   BIG_NAME,
   BIG_SHOP_TEXT, CANYON_WALL,
   BIG_START,
-  BIG_SNAKE,
+  BIG_SNAKE, BIG_TORNADO,
   BIG_COWARD, ROCK_1, ROCK_2, ROCK_3,
   BIG_DEAD,
   BIG_1, BIG_SWING, BIG_CRACK,
