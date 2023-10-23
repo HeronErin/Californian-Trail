@@ -125,18 +125,21 @@ async function dondge_rock(doShake, shakeChance, shakeMax, shakeStrength, walkSp
 		x+=Math.floor(dir*walkSpeed*deltaTime/100);
 		x=Math.min(x,  width-1)
 		x=Math.max(x, 0);
-		clear();
+		
 		let windex = 0
 		let walls = CANYON_WALL.split("\n")
+
+		let PrintString = '\u001B[2J\u001B[0;0f' // From clear();
+
 		for (; windex != 25; windex++)
-			console.log(" ".repeat(shakeAmount) + handle_rock(walls[windex] + " ".repeat(width+3*(walls[windex].length)) + walls[windex], windex))
+			PrintString+=(" ".repeat(shakeAmount) + handle_rock(walls[windex] + " ".repeat(width+3*(walls[windex].length)) + walls[windex], windex))+"\n"
 
 
 		for (let line of SNAKE_FIGHT.split("\n")){
 			if (line){
 				let tline = walls[windex]+" ".repeat(x)+line.substring(line.length-19, line.length);
 				tline += " ".repeat(width+3*(walls[windex].length)+walls[windex].length-tline.length);
-				console.log(" ".repeat(shakeAmount)+handle_rock(tline + walls[windex], windex));
+				PrintString+=(" ".repeat(shakeAmount)+handle_rock(tline + walls[windex], windex))+"\n";
 			}
 			windex+=1;
 		}
@@ -147,8 +150,9 @@ async function dondge_rock(doShake, shakeChance, shakeMax, shakeStrength, walkSp
 		}
 		let bottom = "Use A, and D to move. Or any other key to stop. Avoid the rocks!";
 		let timeStr = timeLeft + " seconds left"
-		console.log(bottom + " ".repeat((width + 4*"M@@@@M".length)-bottom.length-timeStr.length) + timeStr);
-		console.log("P to halt draw rate (for slot connections) O to reset draw rate")
+		PrintString+=(bottom + " ".repeat((width + 4*"M@@@@M".length)-bottom.length-timeStr.length) + timeStr)+"\n";
+		PrintString+=("P to halt draw rate (for slot connections) O to reset draw rate")
+		console.log(PrintString) // By printing one string each frame it _should_ make replit work better
 
 
 		// Remove too low rock
