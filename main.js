@@ -542,11 +542,11 @@ async function first_encounter(){
   await PressAnyKey();
   await setTimeoutPromise(1000);
   await typewriter("\n\nYou step out the gates of your small town.\n", 50)
-  await setTimeoutPromise(4500);
+  await setTimeoutPromise(2500);
   await typewriter("\nYou have heard of about many travelers dieing in their journeys, but that could never happened to you\n", 50)
-  await setTimeoutPromise(4500);
+  await setTimeoutPromise(2500);
   await typewriter("\nThat only happens to those people, never people like you\n", 50)
-  await setTimeoutPromise(4500);
+  await setTimeoutPromise(2500);
 
   if ((await snake()) != true)
     process.exit()
@@ -1011,7 +1011,7 @@ async function traveler_event() {
     await setTimeoutPromise(2000)
     await typewriter(`"Wait, were you the demon" You say.\n`, 50)
     await setTimeoutPromise(2000)
-    await typewriter(`He starts laughing historically, and finally replies "I think you have a few things mixed up"\n`, 50)
+    await typewriter(`He starts laughing hysterically, and finally replies "I think you have a few things mixed up"\n`, 50)
     prompt("Press any key to continue")
     clear();
 
@@ -1167,7 +1167,7 @@ async function shortcut_event(){
     await PressAnyKey();
     clear();
     stats.health = 100; 
-    await fight(man_animation, 90, MAN_HURT_FRAMES[40], false, 40);
+    await fight(man_animation, 3000, MAN_HURT_FRAMES[40], false, 40);
     stats.has_killed=true
     await typewriter("But at what cost. You have killed a man, sure it was self defense, but it will still haunt you.", 50)
     await typewriter("He dropped 5000 dollars", 50)
