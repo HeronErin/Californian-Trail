@@ -1,4 +1,7 @@
 /// Californian Trail
+/// https://github.com/HeronErin/Californian-Trail.git
+
+
 var prompt = require('prompt-sync')()
 // https://nodejs.org/api/timers.html
 const { setTimeout: setTimeoutPromise } = require('node:timers/promises');
@@ -1167,7 +1170,7 @@ async function shortcut_event(){
     await PressAnyKey();
     clear();
     stats.health = 100; 
-    await fight(man_animation, 3000, MAN_HURT_FRAMES[40], false, 40);
+    await fight(man_animation, 500, MAN_HURT_FRAMES[40], false, 40);
     stats.has_killed=true
     await typewriter("But at what cost. You have killed a man, sure it was self defense, but it will still haunt you.", 50)
     await typewriter("He dropped 5000 dollars", 50)
@@ -2200,7 +2203,8 @@ async function main(){
   clear()
   console.log(BIG_NAME)
   console.log("This game is best played in as large a screen as possible. Resize the run window to take up as much of the screen as posible. Otherwise the ascii art will look bad.")
-  console.log("Also this game contains ascii art animations, so bad internet may cause some issues displaying")
+  console.log("Also this game contains real time ascii game play, so bad internet may cause some issues rendering")
+  console.log("For BEST results, clone the repo locally: `git clone https://github.com/HeronErin/Californian-Trail.git`")
   console.log("\n\n")
 
   // Fast debug save loading

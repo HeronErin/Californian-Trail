@@ -146,7 +146,7 @@ async function dondge_rock(doShake, shakeChance, shakeMax, shakeStrength, walkSp
 			return true
 		}
 		let bottom = "Use A, and D to move. Or any other key to stop. Avoid the rocks!";
-		let timeStr = timeLeft + " secounds left"
+		let timeStr = timeLeft + " seconds left"
 		console.log(bottom + " ".repeat((width + 4*"M@@@@M".length)-bottom.length-timeStr.length) + timeStr);
 		console.log("P to halt draw rate (for slot connections) O to reset draw rate")
 
